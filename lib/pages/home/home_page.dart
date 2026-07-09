@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../widgets/logo.dart';
+import '../../widgets/navbar.dart';
+import 'sections/hero_section.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -8,8 +9,11 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-        child: Logo(),
+      body: Stack(
+        children: [
+          HeroSection(),
+          Navbar(),
+        ],
       ),
     );
   }

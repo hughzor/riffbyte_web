@@ -8,9 +8,9 @@ class Logo extends StatelessWidget {
     return const Text(
       "RIFFBYTE",
       style: TextStyle(
-        fontSize: 42,
-        fontWeight: FontWeight.bold,
-        letterSpacing: 4,
+        fontSize: 34,
+        fontWeight: FontWeight.w900,
+        letterSpacing: 6,
       ),
     );
   }
