@@ -1,107 +1,87 @@
 import 'package:flutter/material.dart';
 
+import '../../layout/site_layout.dart';
+
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Sobre Riffbyte"),
-      ),
-      body: SingleChildScrollView(
+    return SiteLayout(
+      child: SingleChildScrollView(
         child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 1100),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 40,
-                vertical: 70,
-              ),
+          child: Padding(
+            padding: const EdgeInsets.all(40),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1000),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const SizedBox(height: 30),
 
                   const Text(
                     "Software built with purpose.",
                     style: TextStyle(
-                      fontSize: 52,
+                      fontSize: 58,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
 
-                  const SizedBox(height: 28),
+                  const SizedBox(height: 30),
 
                   const Text(
                     "Riffbyte desarrolla herramientas modernas para resolver problemas reales mediante un software rápido, intuitivo y bien diseñado.",
                     style: TextStyle(
                       fontSize: 22,
                       color: Colors.white70,
-                      height: 1.7,
+                      height: 1.8,
                     ),
                   ),
 
-                  const SizedBox(height: 90),
+                  const SizedBox(height: 80),
 
                   const Text(
                     "Nuestra filosofía",
                     style: TextStyle(
-                      fontSize: 38,
+                      fontSize: 40,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
 
                   const SizedBox(height: 40),
 
-                  Wrap(
-                    spacing: 30,
-                    runSpacing: 30,
+                  Row(
                     children: const [
-                      _ValueCard(
-                        icon: Icons.extension,
-                        title: "Problemas reales",
-                        text:
-                            "Cada proyecto nace para solucionar una necesidad concreta.",
+                      Expanded(
+                        child: _ValueCard(
+                          icon: Icons.extension,
+                          title: "Problemas reales",
+                          description:
+                              "Cada proyecto nace para solucionar una necesidad concreta.",
+                        ),
                       ),
-                      _ValueCard(
-                        icon: Icons.bolt,
-                        title: "Simplicidad",
-                        text:
-                            "Interfaces limpias, rápidas y sin funciones innecesarias.",
+                      SizedBox(width: 20),
+                      Expanded(
+                        child: _ValueCard(
+                          icon: Icons.flash_on,
+                          title: "Simplicidad",
+                          description:
+                              "Interfaces limpias, rápidas y sin funciones innecesarias.",
+                        ),
                       ),
-                      _ValueCard(
-                        icon: Icons.verified,
-                        title: "Calidad",
-                        text:
-                            "Preferimos publicar una gran herramienta antes que diez mediocres.",
+                      SizedBox(width: 20),
+                      Expanded(
+                        child: _ValueCard(
+                          icon: Icons.verified,
+                          title: "Calidad",
+                          description:
+                              "Preferimos publicar una gran herramienta antes que diez mediocres.",
+                        ),
                       ),
                     ],
                   ),
 
-                  const SizedBox(height: 100),
-
-                  const Text(
-                    "Tecnologías",
-                    style: TextStyle(
-                      fontSize: 38,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-
-                  const SizedBox(height: 40),
-
-                  Wrap(
-                    spacing: 20,
-                    runSpacing: 20,
-                    children: const [
-                      _TechChip("Flutter"),
-                      _TechChip("Dart"),
-                      _TechChip("Python"),
-                      _TechChip("Git"),
-                      _TechChip("GitHub"),
-                      _TechChip("Firebase"),
-                    ],
-                  ),
+                  const SizedBox(height: 80),
                 ],
               ),
             ),
@@ -115,19 +95,18 @@ class AboutPage extends StatelessWidget {
 class _ValueCard extends StatelessWidget {
   final IconData icon;
   final String title;
-  final String text;
+  final String description;
 
   const _ValueCard({
     required this.icon,
     required this.title,
-    required this.text,
+    required this.description,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 310,
-      padding: const EdgeInsets.all(28),
+      padding: const EdgeInsets.all(30),
       decoration: BoxDecoration(
         color: const Color(0xFF202325),
         borderRadius: BorderRadius.circular(18),
@@ -135,19 +114,14 @@ class _ValueCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
-          Icon(
-            icon,
-            size: 40,
-            color: Colors.lightBlueAccent,
-          ),
+          Icon(icon, size: 40),
 
           const SizedBox(height: 20),
 
           Text(
             title,
             style: const TextStyle(
-              fontSize: 24,
+              fontSize: 28,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -155,39 +129,13 @@ class _ValueCard extends StatelessWidget {
           const SizedBox(height: 16),
 
           Text(
-            text,
+            description,
             style: const TextStyle(
               color: Colors.white70,
               height: 1.7,
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _TechChip extends StatelessWidget {
-  final String name;
-
-  const _TechChip(this.name);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 22,
-        vertical: 14,
-      ),
-      decoration: BoxDecoration(
-        color: const Color(0xFF202325),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Text(
-        name,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-        ),
       ),
     );
   }

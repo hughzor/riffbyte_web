@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'logo.dart';
-
-import '../pages/about/about_page.dart';
 
 class Navbar extends StatelessWidget {
   const Navbar({super.key});
@@ -24,30 +23,45 @@ class Navbar extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Logo(),
+          InkWell(
+            onTap: () => context.go('/'),
+            child: const Logo(),
+          ),
 
           const Spacer(),
 
-          _navButton("Productos", () {}),
+          _navButton(
+            context,
+            "InformeVentas",
+            () => context.go('/informeventas'),
+          ),
 
-          _navButton("Sobre Riffbyte", () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => const AboutPage(),
-              ),
-            );
-          }          ),
+          _navButton(
+            context,
+            "Guitar Customizer",
+            () => context.go('/guitar-customizer'),
+          ),
 
-          _navButton("Contacto", () {}),
-                  ],
-                ),
-              );
-            }
+          _navButton(
+            context,
+            "Sobre Riffbyte",
+            () => context.go('/about'),
+          ),
+
+          _navButton(
+            context,
+            "Contacto",
+            () {},
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _navButton(
+    BuildContext context,
     String text,
-   VoidCallback onPressed,
+    VoidCallback onPressed,
   ) {
     return TextButton(
       onPressed: onPressed,
