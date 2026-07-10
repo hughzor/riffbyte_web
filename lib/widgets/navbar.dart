@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'logo.dart';
 
+import '../pages/about/about_page.dart';
+
 class Navbar extends StatelessWidget {
   const Navbar({super.key});
 
@@ -26,21 +28,29 @@ class Navbar extends StatelessWidget {
 
           const Spacer(),
 
-          _navButton("Productos"),
-          const SizedBox(width: 30),
+          _navButton("Productos", () {}),
 
-          _navButton("Sobre Riffbyte"),
-          const SizedBox(width: 30),
+          _navButton("Sobre Riffbyte", () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const AboutPage(),
+              ),
+            );
+          }          ),
 
-          _navButton("Contacto"),
-        ],
-      ),
-    );
-  }
+          _navButton("Contacto", () {}),
+                  ],
+                ),
+              );
+            }
 
-  Widget _navButton(String text) {
+  Widget _navButton(
+    String text,
+   VoidCallback onPressed,
+  ) {
     return TextButton(
-      onPressed: () {},
+      onPressed: onPressed,
       child: Text(text),
     );
   }

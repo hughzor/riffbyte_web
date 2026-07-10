@@ -1,46 +1,38 @@
 import 'package:flutter/material.dart';
 
-import '../../widgets/navbar.dart';
-import '../../theme/app_colors.dart';
-import '../../widgets/primary_button.dart';
-
 class InformeVentasPage extends StatelessWidget {
   const InformeVentasPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("InformeVentas"),
+        backgroundColor: const Color(0xFF181A1B),
+      ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const Navbar(),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 80,
-                vertical: 80,
-              ),
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 1100),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-
-                      TextButton.icon(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(Icons.arrow_back),
-                        label: const Text("Volver"),
-                      ),
-
-                      const SizedBox(height: 40),
-
-                      const Text(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(40),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 900),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
                         "InformeVentas",
                         style: TextStyle(
-                          fontSize: 54,
+                          fontSize: 42,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+      
+                      const Text(
+                        "Genera informes profesionales en segundos",
+                        style: TextStyle(
+                          fontSize: 48,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -48,115 +40,117 @@ class InformeVentasPage extends StatelessWidget {
                       const SizedBox(height: 24),
 
                       const Text(
-                        "Genera informes PDF profesionales automáticamente a partir de archivos CSV en cuestión de segundos.",
+                        "InformeVentas transforma un simple archivo CSV en un informe PDF con estadísticas, gráficos y un diseño profesional listo para entregar.",
                         style: TextStyle(
-                          fontSize: 22,
-                          color: AppColors.textSecondary,
+                          fontSize: 20,
+                          color: Colors.white70,
                           height: 1.7,
                         ),
+                      ),
+              
+                      const SizedBox(height: 40),
+            
+                      Row(
+                        children: [
+                          FilledButton(
+                            onPressed: () {},
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 24,
+                                vertical: 16,
+                              ),
+                              child: Text("Descargar"),
+                            ),
+                          ),
+              
+                          const SizedBox(width: 20),
+            
+                          OutlinedButton(
+                            onPressed: () {},
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 24,
+                                vertical: 16,
+                              ),
+                              child: Text("Ver código"),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 50),
+
+                      Wrap(
+                        spacing: 20,
+                        runSpacing: 20,
+                        children: [
+                          _feature("📄", "PDF automático"),
+                          _feature("📊", "Gráficas"),
+                          _feature("📁", "Importación CSV"),
+                          _feature("⚡", "Proceso en segundos"),
+                        ],
                       ),
 
                       const SizedBox(height: 60),
 
+                      FilledButton(
+                        onPressed: () {},
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 16,
+                          ),
+                          child: Text("Descargar"),
+                        ),
+                      ),
+
+                      const SizedBox(height: 70),
+
                       Container(
                         height: 420,
-                        width: double.infinity,
                         decoration: BoxDecoration(
-                          color: const Color(0xFF25292C),
+                          color: const Color(0xFF25282B),
                           borderRadius: BorderRadius.circular(18),
                           border: Border.all(
-                            color: const Color(0xFF34393D),
+                            color: Colors.white10,
                           ),
                         ),
+
                         child: const Center(
                           child: Text(
                             "Captura del programa",
                             style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 22,
+                              color: Colors.white38,
+                              fontSize: 24,
                             ),
                           ),
-                        ),
+                       ),
                       ),
-
-                      const SizedBox(height: 80),
-
-                      const Text(
-                        "Características",
-                        style: TextStyle(
-                          fontSize: 36,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-
-                      const SizedBox(height: 30),
-
-                      const FeatureTile("Generación automática de PDF"),
-                      FeatureTile("Estadísticas de ventas"),
-                      FeatureTile("Gráficos"),
-                      FeatureTile("Importación CSV"),
-
-                      const SizedBox(height: 80),
-
-                      const Text(
-                        "Precio",
-                        style: TextStyle(
-                          fontSize: 36,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-
-                      const SizedBox(height: 24),
-
-                      const Text(
-                        "19,99 €",
-                        style: TextStyle(
-                          fontSize: 46,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primary,
-                        ),
-                      ),
-
-                      const SizedBox(height: 40),
-
-                      PrimaryButton(
-                        text: "Comprar",
-                        onPressed: () {},
-                      ),
-
-                      const SizedBox(height: 120),
-                    ],
-                  ),
-                ),
+                ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
   }
-}
 
-class FeatureTile extends StatelessWidget {
-  final String text;
-
-  const FeatureTile(this.text, {super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 18),
-      child: Row(
+  Widget _feature(String emoji, String text) {
+    return Container(
+      width: 180,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: const Color(0xFF202325),
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Column(
         children: [
-          const Icon(
-            Icons.check_circle,
-            color: AppColors.primary,
-          ),
-          const SizedBox(width: 14),
           Text(
-            text,
-            style: const TextStyle(fontSize: 20),
+            emoji,
+            style: const TextStyle(fontSize: 30),
           ),
+          const SizedBox(height: 12),
+          Text(text),
         ],
       ),
     );
