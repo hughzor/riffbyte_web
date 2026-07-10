@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../widgets/product_card.dart';
 
+import '../../informeventas/informeventas_page.dart';
+
 class ProductsSection extends StatelessWidget {
   const ProductsSection({super.key});
 
@@ -30,12 +32,52 @@ class ProductsSection extends StatelessWidget {
             runSpacing: 40,
             alignment: WrapAlignment.center,
             children: [
+
               ProductCard(
                 title: "InformeVentas",
                 description:
                     "Genera informes PDF profesionales automáticamente a partir de archivos CSV.",
+
+                icon: Icons.description_outlined,
+
+                status: "Disponible",
+                statusColor: Colors.green,
+
+                features: const [
+                  "Windows",
+                  "PDF automático",
+                  "Importación CSV",
+                ],
+
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const InformeVentasPage(),
+                    ),
+                  );
+                },
+              ),
+
+              ProductCard(
+                title: "Guitar Customizer",
+                description:
+                    "Diseña la guitarra perfecta antes de comprar una sola pieza.",
+
+                icon: Icons.music_note,
+
+                status: "Próximamente",
+                statusColor: Colors.orange,
+
+                features: const [
+                  "IA",
+                  "Catálogo",
+                  "Presupuestos",
+                ],
+
                 onPressed: () {},
               ),
+
             ],
           ),
         ],
