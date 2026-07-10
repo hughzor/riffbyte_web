@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../layout/site_layout.dart';
 import '../../widgets/footer.dart';
 import '../../widgets/primary_button.dart';
+import 'package:go_router/go_router.dart';
 
 class InformeVentasPage extends StatelessWidget {
   const InformeVentasPage({super.key});
@@ -71,15 +72,17 @@ class InformeVentasPage extends StatelessWidget {
                           const SizedBox(width: 20),
 
                           OutlinedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              context.go('/informeventas/csv');
+                            },
                             child: const Padding(
                               padding: EdgeInsets.symmetric(
                                 horizontal: 28,
                                 vertical: 18,
                               ),
-                              child: Text("Ver código"),
+                              child: Text("Formato del CSV"),
                             ),
-                          ),
+                          )
 
                         ],
                       ),
