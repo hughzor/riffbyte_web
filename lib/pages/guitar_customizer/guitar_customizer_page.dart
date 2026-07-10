@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../layout/site_layout.dart';
+import '/widgets/footer.dart';
 
 class GuitarCustomizerPage extends StatelessWidget {
   const GuitarCustomizerPage({super.key});
@@ -65,6 +66,8 @@ class GuitarCustomizerPage extends StatelessWidget {
                   ),
 
                   const SizedBox(height: 80),
+
+                  const Footer(),
                 ],
               ),
             ),

@@ -16,10 +16,7 @@ class SiteLayout extends StatelessWidget {
       body: Column(
         children: [
           const Navbar(),
-
-          Expanded(
-            child: child,
-          ),
+          Expanded(child: child),
         ],
       ),
     );

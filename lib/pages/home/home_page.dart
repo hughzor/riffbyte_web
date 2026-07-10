@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../layout/site_layout.dart';
 import 'sections/hero_section.dart';
 import 'sections/products_section.dart';
+import '/widgets/footer.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -15,6 +16,7 @@ class HomePage extends StatelessWidget {
           children: const [
             HeroSection(),
             ProductsSection(),
+            Footer(),
           ],
         ),
       ),

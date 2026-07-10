@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../layout/site_layout.dart';
 import '../../widgets/primary_button.dart';
+import '/widgets/footer.dart';
 
 class InformeVentasPage extends StatelessWidget {
   const InformeVentasPage({super.key});
@@ -93,6 +94,8 @@ class InformeVentasPage extends StatelessWidget {
                   ),
 
                   const SizedBox(height: 80),
+                  
+                  const Footer(),
                 ],
               ),
             ),
