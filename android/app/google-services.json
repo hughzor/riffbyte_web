@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "355375552754",
+    "project_id": "riffbyte",
+    "storage_bucket": "riffbyte.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:355375552754:android:2ac9fd832af0cb2549586b",
+        "android_client_info": {
+          "package_name": "com.example.riffbyte_web"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZJf97YmfCGORfNsFITJNN62uGAKQOmTY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
