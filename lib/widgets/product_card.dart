@@ -10,7 +10,6 @@ class ProductCard extends StatefulWidget {
   final String status;
   final Color statusColor;
   final List<String> features;
-  
 
   const ProductCard({
     super.key,
@@ -33,14 +32,14 @@ class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
+      cursor: SystemMouseCursors.click,
       onEnter: (_) => setState(() => hovering = true),
       onExit: (_) => setState(() => hovering = false),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 180),
-        curve: Curves.easeOut,
+        duration: const Duration(milliseconds: 220),
+        curve: Curves.easeOutCubic,
 
         width: 340,
-
         padding: const EdgeInsets.all(30),
 
         transform: Matrix4.identity()
@@ -62,18 +61,24 @@ class _ProductCardState extends State<ProductCard> {
           boxShadow: hovering
               ? [
                   BoxShadow(
-                    color: AppColors.primary.withOpacity(.18),
-                    blurRadius: 22,
-                    spreadRadius: 1,
-                  )
+                    color: AppColors.primary.withOpacity(.12),
+                    blurRadius: 28,
+                    spreadRadius: 0,
+                    offset: const Offset(0, 14),
+                  ),
                 ]
-              : [],
+              : [
+                  const BoxShadow(
+                    color: Color(0x22000000),
+                    blurRadius: 12,
+                    offset: Offset(0, 6),
+                  ),
+                ],
         ),
 
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             Align(
               alignment: Alignment.centerRight,
               child: Container(
@@ -127,34 +132,35 @@ class _ProductCardState extends State<ProductCard> {
 
             const SizedBox(height: 26),
 
-            ...widget.features.map((feature) => _Feature(feature)),
+            ...widget.features.map(_Feature.new),
 
             const SizedBox(height: 32),
 
             InkWell(
+              borderRadius: BorderRadius.circular(8),
               onTap: widget.onPressed,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-
-                  Text(
-                    "Ver producto",
-                    style: TextStyle(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.bold,
+              child: const Padding(
+                padding: EdgeInsets.symmetric(vertical: 4),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "Ver producto",
+                      style: TextStyle(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-
-                  SizedBox(width: 8),
-
-                  Icon(
-                    Icons.arrow_forward,
-                    size: 18,
-                    color: AppColors.primary,
-                  ),
-                ],
+                    SizedBox(width: 8),
+                    Icon(
+                      Icons.arrow_forward,
+                      size: 18,
+                      color: AppColors.primary,
+                    ),
+                  ],
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -173,21 +179,21 @@ class _Feature extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10),
       child: Row(
         children: [
-
           const Icon(
             Icons.circle,
             size: 7,
             color: AppColors.primary,
           ),
-
           const SizedBox(width: 10),
-
-          Text(
-            text,
-            style: const TextStyle(
-              color: AppColors.textSecondary,
+          Expanded(
+            child: Text(
+              text,
+              style: const TextStyle(
+                color: AppColors.textSecondary,
+                height: 1.5,
+              ),
             ),
-          )
+          ),
         ],
       ),
     );

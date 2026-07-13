@@ -7,6 +7,8 @@ import 'sections/products_section.dart';
 import 'sections/process_section.dart';
 import '/widgets/footer.dart';
 
+import '../../utils/scroll_controller_service.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -14,6 +16,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SiteLayout(
       child: SingleChildScrollView(
+        controller: ScrollControllerService.controller,
         child: Column(
           children: const [
             HeroSection(),

@@ -13,10 +13,21 @@ class SiteLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: [
-          const Navbar(),
-          Expanded(child: child),
+          // Contenido
+          Padding(
+            padding: const EdgeInsets.only(top: 90),
+            child: child,
+          ),
+
+          // Navbar siempre visible
+          const Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Navbar(),
+          ),
         ],
       ),
     );

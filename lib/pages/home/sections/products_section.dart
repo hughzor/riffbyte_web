@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../widgets/product_card.dart';
 
-import '../../informeventas/informeventas_page.dart';
+import '../../../utils/scroll_controller_service.dart';
 
 class ProductsSection extends StatelessWidget {
   const ProductsSection({super.key});
@@ -15,6 +16,7 @@ class ProductsSection extends StatelessWidget {
         horizontal: 80,
         vertical: 100,
       ),
+      key: ScrollControllerService.productsKey,
       child: Column(
         children: [
           const Text(
@@ -49,14 +51,7 @@ class ProductsSection extends StatelessWidget {
                   "Importación CSV",
                 ],
 
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const InformeVentasPage(),
-                    ),
-                  );
-                },
+                onPressed: () => context.go('/informeventas'),
               ),
 
               ProductCard(
@@ -75,7 +70,7 @@ class ProductsSection extends StatelessWidget {
                   "Presupuestos",
                 ],
 
-                onPressed: () {},
+                onPressed: () => context.go('/guitar-customizer'),
               ),
 
             ],

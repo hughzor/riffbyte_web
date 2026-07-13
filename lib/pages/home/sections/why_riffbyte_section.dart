@@ -13,7 +13,7 @@ class WhyRiffbyteSection extends StatelessWidget {
       child: Column(
         children: [
           const Text(
-            "¿Por qué Ryffbyte?",
+            "¿Por qué Riffbyte?",
             style: TextStyle(
               fontSize: 42,
               fontWeight: FontWeight.bold,
