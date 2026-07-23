@@ -7,6 +7,8 @@ class DashboardProductCard extends StatefulWidget {
   final String title;
   final String subtitle;
   final String version;
+  final String lastUpdate;
+  final String buttonText;
   final Color statusColor;
   final String status;
   final VoidCallback onPressed;
@@ -17,18 +19,18 @@ class DashboardProductCard extends StatefulWidget {
     required this.title,
     required this.subtitle,
     required this.version,
+    required this.lastUpdate,
+    required this.buttonText,
     required this.status,
     required this.statusColor,
     required this.onPressed,
   });
 
   @override
-  State<DashboardProductCard> createState() =>
-      _DashboardProductCardState();
+  State<DashboardProductCard> createState() => _DashboardProductCardState();
 }
 
-class _DashboardProductCardState
-    extends State<DashboardProductCard> {
+class _DashboardProductCardState extends State<DashboardProductCard> {
   bool hovering = false;
 
   @override
@@ -40,30 +42,15 @@ class _DashboardProductCardState
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 180),
         curve: Curves.easeOut,
-
         width: 360,
-
         padding: const EdgeInsets.all(28),
-
-        transform: Matrix4.identity()
-          ..translate(
-            0.0,
-            hovering ? -6.0 : 0.0,
-          ),
-
+        transform: Matrix4.identity()..translate(0.0, hovering ? -6.0 : 0.0),
         decoration: BoxDecoration(
-          color: hovering
-              ? const Color(0xFF25292C)
-              : const Color(0xFF202325),
-
+          color: hovering ? const Color(0xFF25292C) : const Color(0xFF202325),
           borderRadius: BorderRadius.circular(20),
-
           border: Border.all(
-            color: hovering
-                ? AppColors.primary
-                : const Color(0xFF31363A),
+            color: hovering ? AppColors.primary : const Color(0xFF31363A),
           ),
-
           boxShadow: hovering
               ? [
                   BoxShadow(
@@ -74,17 +61,12 @@ class _DashboardProductCardState
                 ]
               : [],
         ),
-
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Icon(
-                  widget.icon,
-                  size: 46,
-                  color: AppColors.primary,
-                ),
+                Icon(widget.icon, size: 46, color: AppColors.primary),
 
                 const Spacer(),
 
@@ -112,10 +94,7 @@ class _DashboardProductCardState
 
             Text(
               widget.title,
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
 
             const SizedBox(height: 10),
@@ -128,35 +107,41 @@ class _DashboardProductCardState
               ),
             ),
 
-            const SizedBox(height: 22),
+            const SizedBox(height: 24),
 
-            Row(
-              children: [
-                const Icon(
-                  Icons.verified,
-                  size: 18,
-                  color: Colors.green,
-                ),
+            const Divider(),
 
-                const SizedBox(width: 8),
+            const SizedBox(height: 20),
 
-                Expanded(
-                  child: Text(
-                    widget.version,
-                    style: const TextStyle(
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ),
-              ],
+            const Text("Versión", style: TextStyle(color: Colors.white54)),
+
+            const SizedBox(height: 4),
+
+            Text(
+              widget.version,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
             ),
 
-            const SizedBox(height: 28),
+            const SizedBox(height: 18),
 
-            TextButton.icon(
-              onPressed: widget.onPressed,
-              icon: const Icon(Icons.arrow_forward),
-              label: const Text("Abrir"),
+            const Text(
+              "Última actualización",
+              style: TextStyle(color: Colors.white54),
+            ),
+
+            const SizedBox(height: 4),
+
+            Text(widget.lastUpdate),
+
+            const SizedBox(height: 30),
+
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: widget.onPressed,
+                icon: const Icon(Icons.arrow_forward),
+                label: Text(widget.buttonText),
+              ),
             ),
           ],
         ),

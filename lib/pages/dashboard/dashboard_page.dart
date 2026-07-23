@@ -1,46 +1,51 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:riffbyte_web/models/app_user.dart';
 
-import '../../layout/site_layout.dart';
+import '../../services/firebase_auth_service.dart';
+import '../../layout/dashboard_layout.dart';
 import '../../widgets/footer.dart';
 
-import 'package:go_router/go_router.dart';
-
-import '../../widgets/dashboard_product_card.dart';
-import '../../widgets/dashboard_sidebar.dart';
+import 'package:provider/provider.dart';
+import '../../providers/user_provider.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Row(
-        children: [
-          const DashboardSidebar(),
+    final provider = context.watch<UserProvider>();
+    final appUser = provider.user;
 
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: const [
-                  _WelcomeSection(),
-                  _ProductsSection(),
-                  _QuickActionsSection(),
-                  Footer(),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
+    if (provider.loading) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
+    return DashboardLayout(
+      child: Column(children: const [_WelcomeSection(), Footer()]),
     );
   }
 }
 
-class _WelcomeSection extends StatelessWidget {
+class _WelcomeSection extends StatefulWidget {
   const _WelcomeSection();
 
   @override
+  State<_WelcomeSection> createState() => _WelcomeSectionState();
+}
+
+class _WelcomeSectionState extends State<_WelcomeSection> {
+  AppUser? get appUser => context.watch<UserProvider>().user;
+
+  @override
   Widget build(BuildContext context) {
+    final user = appUser;
+
+    if (user == null) {
+      return const SizedBox.shrink();
+    }
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(80, 80, 80, 30),
       child: Container(
@@ -56,151 +61,126 @@ class _WelcomeSection extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Hola, Hugh 👋",
-              style: Theme.of(
-                context,
-              ).textTheme.displaySmall?.copyWith(fontWeight: FontWeight.bold),
-            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        appUser == null
+                            ? "¡Bienvenido! 👋"
+                            : appUser!.displayName.isEmpty
+                            ? "¡Bienvenido! 👋"
+                            : "Hola, ${appUser!.displayName} 👋",
+                        style: Theme.of(context).textTheme.displaySmall
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
 
-            const SizedBox(height: 12),
+                      const SizedBox(height: 10),
 
-            const Text(
-              "Bienvenido a tu panel de Riffbyte. Aquí podrás gestionar todos tus productos y licencias.",
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.white70,
-                height: 1.7,
-              ),
+                      Text(
+                        appUser?.email ?? "",
+                        style: const TextStyle(
+                          fontSize: 19,
+                          color: Colors.white70,
+                        ),
+                      ),
+
+                      const SizedBox(height: 18),
+
+                      const Text(
+                        "Este es tu panel personal de Riffbyte. Desde aquí podrás gestionar tus productos, descargas y futuras licencias.",
+                        style: TextStyle(
+                          fontSize: 17,
+                          height: 1.7,
+                          color: Colors.white70,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                OutlinedButton.icon(
+                  onPressed: () async {
+                    await FirebaseAuthService().signOut();
+
+                    if (context.mounted) {
+                      context.go('/');
+                    }
+                  },
+                  icon: const Icon(Icons.logout),
+                  label: const Text("Cerrar sesión"),
+                ),
+              ],
             ),
 
             const SizedBox(height: 45),
 
-            Wrap(
-              spacing: 24,
-              runSpacing: 24,
-              children: const [
-                _StatCard(icon: Icons.apps, value: "2", label: "Productos"),
-                _StatCard(
-                  icon: Icons.verified,
-                  value: "1",
-                  label: "Licencia activa",
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Divider(color: Color(0xFF31363A)),
+
+                const SizedBox(height: 25),
+
+                const Text(
+                  "Información de la cuenta",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                _StatCard(
-                  icon: Icons.update,
-                  value: "0",
-                  label: "Actualizaciones",
+
+                const SizedBox(height: 25),
+
+                _InfoRow(
+                  icon: Icons.email_outlined,
+                  title: "Correo electrónico",
+                  value: appUser?.email ?? "",
                 ),
-                _StatCard(
-                  icon: Icons.check_circle,
-                  value: "100%",
-                  label: "Cuenta lista",
+
+                const SizedBox(height: 18),
+
+                _InfoRow(
+                  icon: Icons.person_outline,
+                  title: "Nombre",
+                  value: user.displayName,
+                ),
+
+                const SizedBox(height: 18),
+
+                _InfoRow(
+                  icon: Icons.verified_user_outlined,
+                  title: "Estado",
+                  value: "Cuenta activa",
+                ),
+
+                const SizedBox(height: 35),
+
+                Wrap(
+                  spacing: 18,
+                  runSpacing: 18,
+                  children: [
+                    FilledButton.icon(
+                      onPressed: () {
+                        context.go('/dashboard/informeventas');
+                      },
+                      icon: const Icon(Icons.description_outlined),
+                      label: const Text("Gestionar InformeVentas"),
+                    ),
+
+                    OutlinedButton.icon(
+                      onPressed: () {
+                        context.go('/dashboard/guitar-customizer');
+                      },
+                      icon: const Icon(Icons.music_note_outlined),
+                      label: const Text("Guitar Customizer"),
+                    ),
+                  ],
                 ),
               ],
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _StatCard extends StatelessWidget {
-  final IconData icon;
-  final String value;
-  final String label;
-
-  const _StatCard({
-    required this.icon,
-    required this.value,
-    required this.label,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 190,
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: const Color(0xFF232729),
-        borderRadius: BorderRadius.circular(18),
-      ),
-      child: Column(
-        children: [
-          Icon(icon, color: Colors.lightBlueAccent, size: 34),
-
-          const SizedBox(height: 18),
-
-          Text(
-            value,
-            style: const TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
-          ),
-
-          const SizedBox(height: 8),
-
-          Text(
-            label,
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white70),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ProductsSection extends StatelessWidget {
-  const _ProductsSection();
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 80),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "Tus productos",
-            style: TextStyle(fontSize: 38, fontWeight: FontWeight.bold),
-          ),
-
-          const SizedBox(height: 45),
-
-          Wrap(
-            spacing: 35,
-            runSpacing: 35,
-            children: [
-              DashboardProductCard(
-                icon: Icons.description_outlined,
-                title: "InformeVentas",
-                subtitle:
-                    "Generador automático de informes PDF a partir de archivos CSV.",
-
-                version: "Versión 1.0",
-                status: "Disponible",
-                statusColor: Colors.green,
-
-                onPressed: () {
-                  context.go('/informeventas');
-                },
-              ),
-
-              DashboardProductCard(
-                icon: Icons.music_note,
-                title: "Guitar Customizer",
-                subtitle: "Diseña tu guitarra antes de comprar una sola pieza.",
-
-                version: "En desarrollo",
-                status: "Próximamente",
-                statusColor: Colors.orange,
-
-                onPressed: () {
-                  context.go('/guitar-customizer');
-                },
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }
@@ -212,12 +192,12 @@ class _QuickActionsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(80, 100, 80, 100),
+      padding: const EdgeInsets.fromLTRB(80, 80, 80, 100),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            "Acciones rápidas",
+            "Ajustes",
             style: TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
           ),
 
@@ -226,10 +206,26 @@ class _QuickActionsSection extends StatelessWidget {
           Wrap(
             spacing: 25,
             runSpacing: 25,
-            children: const [
-              _ActionTile(icon: Icons.shopping_bag_outlined, title: "Comprar"),
-              _ActionTile(icon: Icons.download_outlined, title: "Descargas"),
-              _ActionTile(icon: Icons.settings_outlined, title: "Ajustes"),
+            children: [
+              _ActionTile(
+                icon: Icons.lock_outline,
+                title: "Cambiar contraseña",
+                onTap: () {
+                  context.go('/settings');
+                },
+              ),
+
+              _ActionTile(
+                icon: Icons.logout,
+                title: "Cerrar sesión",
+                onTap: () async {
+                  await FirebaseAuth.instance.signOut();
+
+                  if (context.mounted) {
+                    context.go('/');
+                  }
+                },
+              ),
             ],
           ),
         ],
@@ -241,28 +237,76 @@ class _QuickActionsSection extends StatelessWidget {
 class _ActionTile extends StatelessWidget {
   final IconData icon;
   final String title;
+  final VoidCallback onTap;
 
-  const _ActionTile({required this.icon, required this.title});
+  const _ActionTile({
+    required this.icon,
+    required this.title,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 170,
-      height: 130,
-      decoration: BoxDecoration(
-        color: const Color(0xFF202325),
-        borderRadius: BorderRadius.circular(18),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 34),
+    return InkWell(
+      borderRadius: BorderRadius.circular(18),
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        width: 180,
+        height: 135,
+        decoration: BoxDecoration(
+          color: const Color(0xFF202325),
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: const Color(0xFF31363A)),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 36, color: Colors.lightBlueAccent),
 
-          const SizedBox(height: 14),
+            const SizedBox(height: 18),
 
-          Text(title),
-        ],
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 15),
+            ),
+          ],
+        ),
       ),
+    );
+  }
+}
+
+class _InfoRow extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String value;
+
+  const _InfoRow({
+    required this.icon,
+    required this.title,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon, color: Colors.lightBlueAccent, size: 24),
+
+        const SizedBox(width: 16),
+
+        SizedBox(
+          width: 180,
+          child: Text(
+            title,
+            style: const TextStyle(color: Colors.white60, fontSize: 16),
+          ),
+        ),
+
+        Expanded(child: Text(value, style: const TextStyle(fontSize: 16))),
+      ],
     );
   }
 }

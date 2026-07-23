@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../services/download_service.dart';
 import '../../layout/site_layout.dart';
 import '../../widgets/footer.dart';
-import '../../widgets/primary_button.dart';
 
 class CsvGuidePage extends StatelessWidget {
   const CsvGuidePage({super.key});
@@ -331,11 +331,26 @@ class CsvGuidePage extends StatelessWidget {
 
                       const SizedBox(height: 70),
 
-                      Center(
-                        child: PrimaryButton(
-                          text: "Descargar CSV de ejemplo",
-                          onPressed: () {},
-                        ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: DownloadService.downloadSampleCsv,
+                              icon: const Icon(Icons.table_chart),
+                              label: const Text("CSV de ejemplo"),
+                            ),
+                          ),
+
+                          const SizedBox(width: 16),
+
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: DownloadService.downloadExamplePdf,
+                              icon: const Icon(Icons.picture_as_pdf),
+                              label: const Text("PDF de ejemplo"),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

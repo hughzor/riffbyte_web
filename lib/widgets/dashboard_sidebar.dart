@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import '../theme/app_colors.dart';
-
-import 'package:provider/provider.dart';
-
-import '../services/auth_service.dart';
 
 class DashboardSidebar extends StatelessWidget {
   const DashboardSidebar({super.key});
@@ -25,12 +21,19 @@ class DashboardSidebar extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "RIFFBYTE",
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primary,
+            InkWell(
+              borderRadius: BorderRadius.circular(8),
+              onTap: () => context.go('/'),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(vertical: 6),
+                child: Text(
+                  "RIFFBYTE",
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primary,
+                  ),
+                ),
               ),
             ),
 
@@ -48,24 +51,24 @@ class DashboardSidebar extends StatelessWidget {
               context,
               icon: Icons.description_outlined,
               text: "InformeVentas",
-              selected: false,
-              onTap: () => context.go('/informeventas'),
+              selected: location.startsWith('/dashboard/informeventas'),
+              onTap: () => context.go('/dashboard/informeventas'),
             ),
 
             _item(
               context,
               icon: Icons.music_note_outlined,
               text: "Guitar Customizer",
-              selected: false,
-              onTap: () => context.go('/guitar-customizer'),
+              selected: location.startsWith('/dashboard/guitar-customizer'),
+              onTap: () => context.go('/dashboard/guitar-customizer'),
             ),
 
             _item(
               context,
               icon: Icons.settings_outlined,
               text: "Ajustes",
-              selected: false,
-              onTap: () {},
+              selected: location == '/settings',
+              onTap: () => context.go('/settings'),
             ),
 
             const Spacer(),
@@ -75,9 +78,16 @@ class DashboardSidebar extends StatelessWidget {
             const SizedBox(height: 20),
 
             TextButton.icon(
-              onPressed: () {
-                context.read<AuthService>().logout();
-                context.go('/');
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+
+                if (context.mounted) {
+                  context.go('/');
+                }
+
+                if (context.mounted) {
+                  context.go('/');
+                }
               },
               icon: const Icon(Icons.logout),
               label: const Text("Cerrar sesión"),

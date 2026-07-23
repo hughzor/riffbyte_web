@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../theme/app_colors.dart';
 import 'logo.dart';
@@ -12,6 +13,7 @@ class Navbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final location = GoRouterState.of(context).uri.toString();
+    final user = FirebaseAuth.instance.currentUser;
 
     return ClipRect(
       child: BackdropFilter(
@@ -64,12 +66,62 @@ class Navbar extends StatelessWidget {
 
               const SizedBox(width: 10),
 
-              _navButton(
-                context,
-                text: "Iniciar sesión",
-                selected: location.startsWith('/login'),
-                onPressed: () => context.go('/login'),
-              ),
+              user == null
+                  ? _navButton(
+                      context,
+                      text: "Iniciar sesión",
+                      selected: location.startsWith('/login'),
+                      onPressed: () => context.go('/login'),
+                    )
+                  : PopupMenuButton<String>(
+                      color: const Color(0xFF202325),
+                      onSelected: (value) async {
+                        switch (value) {
+                          case "dashboard":
+                            context.go('/dashboard');
+                            break;
+
+                          case "settings":
+                            context.go('/settings');
+                            break;
+
+                          case "logout":
+                            await FirebaseAuth.instance.signOut();
+
+                            if (context.mounted) {
+                              context.go('/');
+                            }
+                            break;
+                        }
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        child: Row(
+                          children: [
+                            Icon(Icons.account_circle_outlined),
+                            SizedBox(width: 8),
+                            Text("Mi cuenta"),
+                            SizedBox(width: 4),
+                            Icon(Icons.keyboard_arrow_down),
+                          ],
+                        ),
+                      ),
+                      itemBuilder: (_) => const [
+                        PopupMenuItem(
+                          value: "dashboard",
+                          child: Text("Dashboard"),
+                        ),
+                        PopupMenuItem(
+                          value: "settings",
+                          child: Text("Ajustes"),
+                        ),
+                        PopupMenuDivider(),
+                        PopupMenuItem(
+                          value: "logout",
+                          child: Text("Cerrar sesión"),
+                        ),
+                      ],
+                    ),
             ],
           ),
         ),
